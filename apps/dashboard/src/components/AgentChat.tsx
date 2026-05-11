@@ -13,9 +13,26 @@ interface Props {
 
 const dashboardBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const configuredChatApiUrl = process.env.NEXT_PUBLIC_CHAT_API_URL?.trim();
+
+function normalizeChatApiUrl(url: string | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith('/')) return url;
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === 'https:' || (parsed.protocol === 'http:' && parsed.hostname === 'localhost')) {
+      return parsed.toString();
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 const chatApiUrl =
   configuredChatApiUrl && configuredChatApiUrl.length > 0
-    ? configuredChatApiUrl
+    ? normalizeChatApiUrl(configuredChatApiUrl)
     : process.env.NEXT_PUBLIC_DEPLOY_TARGET === 'github-pages'
       ? null
       : `${dashboardBasePath}/api/chat`;
