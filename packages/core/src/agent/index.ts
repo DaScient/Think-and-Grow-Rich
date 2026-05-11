@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto';
 import type { AgentContext, MasteryLevel, Message, PrincipleId } from '../types/index.js';
 import { getPrincipleById } from '../principles/index.js';
 
@@ -55,6 +54,18 @@ Rules:
 - Refer to the user's current progress to personalize your guidance.
 - When relevant, cite specific principles, affirmations, or exercises.`;
 
+let messageIdCounter = 0;
+
+function createMessageId(): string {
+  const globalCrypto = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
+  if (typeof globalCrypto?.randomUUID === 'function') {
+    return globalCrypto.randomUUID();
+  }
+
+  messageIdCounter += 1;
+  return `msg-${Date.now().toString(36)}-${messageIdCounter.toString(36)}`;
+}
+
 /**
  * Build the system message for the agentic assistant, personalized to the
  * user's active principle and progress.
@@ -83,7 +94,7 @@ Affirmation to reinforce: "${principle.affirmation}"`;
  */
 export function createUserMessage(content: string, principleId?: PrincipleId): Message {
   const base = {
-    id: randomUUID(),
+    id: createMessageId(),
     role: 'user' as const,
     content,
     timestamp: new Date(),
@@ -96,7 +107,7 @@ export function createUserMessage(content: string, principleId?: PrincipleId): M
  */
 export function createAssistantMessage(content: string, principleId?: PrincipleId): Message {
   const base = {
-    id: randomUUID(),
+    id: createMessageId(),
     role: 'assistant' as const,
     content,
     timestamp: new Date(),

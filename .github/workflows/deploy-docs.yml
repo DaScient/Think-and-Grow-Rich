@@ -50,6 +50,7 @@ jobs:
         run: pnpm --filter @tagr/dashboard build
         env:
           NEXT_PUBLIC_BASE_PATH: /Think-and-Grow-Rich/dashboard
+          NEXT_PUBLIC_DEPLOY_TARGET: github-pages
 
       # Assemble final site structure:
       # /                    → VitePress docs

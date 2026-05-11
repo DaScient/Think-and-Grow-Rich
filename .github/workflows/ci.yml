@@ -99,6 +99,7 @@ jobs:
         run: pnpm turbo run build
         env:
           NEXT_PUBLIC_BASE_PATH: /Think-and-Grow-Rich/dashboard
+          NEXT_PUBLIC_DEPLOY_TARGET: github-pages
 
       - name: Upload dashboard build artifact
         uses: actions/upload-artifact@v4

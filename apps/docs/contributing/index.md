@@ -28,8 +28,8 @@ pnpm dev
 
 | App | URL | Description |
 |-----|-----|-------------|
-| Dashboard | http://localhost:3000 | Next.js AI Dashboard |
-| Docs | http://localhost:5173 | VitePress documentation |
+| Dashboard | `http://localhost:3000` | Next.js AI Dashboard |
+| Docs | `http://localhost:5173` | VitePress documentation |
 
 ## Development Workflow
 

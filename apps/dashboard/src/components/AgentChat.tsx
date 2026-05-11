@@ -11,6 +11,38 @@ interface Props {
   activePrinciple: PrincipleId | null;
 }
 
+const dashboardBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const configuredChatApiUrl = process.env.NEXT_PUBLIC_CHAT_API_URL?.trim();
+
+function normalizeChatApiUrl(url: string | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith('/')) return url;
+
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === 'https:' || (parsed.protocol === 'http:' && parsed.hostname === 'localhost')) {
+      return parsed.toString();
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+const chatApiUrl =
+  configuredChatApiUrl && configuredChatApiUrl.length > 0
+    ? normalizeChatApiUrl(configuredChatApiUrl)
+    : process.env.NEXT_PUBLIC_DEPLOY_TARGET === 'github-pages'
+      ? null
+      : `${dashboardBasePath}/api/chat`;
+
+const STATIC_DEPLOYMENT_MESSAGE =
+  '⚠ Live AI coaching is disabled in the static GitHub Pages build. Set `NEXT_PUBLIC_CHAT_API_URL` to a hosted chat endpoint to enable it there. In the meantime, reflect on this: *"Whatever the mind can conceive and believe, it can achieve."* — Napoleon Hill';
+
+const TEMPORARY_UNAVAILABLE_MESSAGE =
+  '⚠ The mentor is unavailable right now. Configure your OpenAI API key in the environment to enable live AI coaching. In the meantime, reflect on this: *"Whatever the mind can conceive and believe, it can achieve."* — Napoleon Hill';
+
 const STARTER_PROMPTS = [
   'What is my first step toward achieving a burning desire?',
   'How do I develop unshakeable faith in my goals?',
@@ -36,8 +68,19 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
+    const resolvedChatApiUrl = chatApiUrl;
     const userMsg = createUserMessage(content.trim(), activePrinciple ?? undefined);
     setMessages((prev) => [...prev, userMsg]);
+
+    if (!resolvedChatApiUrl) {
+      const assistantMsg = createAssistantMessage(
+        STATIC_DEPLOYMENT_MESSAGE,
+        activePrinciple ?? undefined,
+      );
+      setMessages((prev) => [...prev, assistantMsg]);
+      return;
+    }
+
     setInput('');
     setIsLoading(true);
 
@@ -52,7 +95,7 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
         ],
       };
 
-      const res = await fetch('/api/chat', {
+      const res = await fetch(resolvedChatApiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -67,7 +110,7 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
       setMessages((prev) => [...prev, assistantMsg]);
     } catch {
       const errorMsg = createAssistantMessage(
-        '⚠ The mentor is unavailable right now. Configure your OpenAI API key in the environment to enable live AI coaching. In the meantime, reflect on this: *"Whatever the mind can conceive and believe, it can achieve."* — Napoleon Hill',
+        TEMPORARY_UNAVAILABLE_MESSAGE,
         activePrinciple ?? undefined,
       );
       setMessages((prev) => [...prev, errorMsg]);
