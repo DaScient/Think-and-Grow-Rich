@@ -1,0 +1,82 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  NODE_VERSION: "20"
+  PNPM_VERSION: "9"
+
+jobs:
+  # ─── Build ───────────────────────────────────────────────────────────────────
+  build:
+    name: Build for GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Build the VitePress docs
+      - name: Build docs
+        run: pnpm --filter @tagr/docs build
+
+      # Build the Next.js dashboard (static export)
+      - name: Build dashboard
+        run: pnpm --filter @tagr/dashboard build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /Think-and-Grow-Rich/dashboard
+
+      # Assemble final site structure:
+      # /                    → VitePress docs
+      # /dashboard/          → Next.js dashboard
+      - name: Assemble GitHub Pages artifact
+        run: |
+          mkdir -p _site/dashboard
+          cp -r apps/docs/.vitepress/dist/. _site/
+          cp -r apps/dashboard/out/. _site/dashboard/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+  # ─── Deploy ──────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
