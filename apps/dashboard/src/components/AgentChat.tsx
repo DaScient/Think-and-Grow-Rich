@@ -51,11 +51,11 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
-    const activeChatApiUrl = chatApiUrl;
+    const resolvedChatApiUrl = chatApiUrl;
     const userMsg = createUserMessage(content.trim(), activePrinciple ?? undefined);
     setMessages((prev) => [...prev, userMsg]);
 
-    if (!activeChatApiUrl) {
+    if (!resolvedChatApiUrl) {
       const assistantMsg = createAssistantMessage(
         STATIC_DEPLOYMENT_MESSAGE,
         activePrinciple ?? undefined,
@@ -78,7 +78,7 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
         ],
       };
 
-      const res = await fetch(activeChatApiUrl, {
+      const res = await fetch(resolvedChatApiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -54,13 +54,16 @@ Rules:
 - Refer to the user's current progress to personalize your guidance.
 - When relevant, cite specific principles, affirmations, or exercises.`;
 
+let messageIdCounter = 0;
+
 function createMessageId(): string {
   const globalCrypto = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
   if (typeof globalCrypto?.randomUUID === 'function') {
     return globalCrypto.randomUUID();
   }
 
-  return `msg-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  messageIdCounter += 1;
+  return `msg-${Date.now().toString(36)}-${messageIdCounter.toString(36)}`;
 }
 
 /**
