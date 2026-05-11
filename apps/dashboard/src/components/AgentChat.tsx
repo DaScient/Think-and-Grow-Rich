@@ -53,18 +53,18 @@ export function AgentChat({ userProgress, activePrinciple }: Props) {
 
     const activeChatApiUrl = chatApiUrl;
     const userMsg = createUserMessage(content.trim(), activePrinciple ?? undefined);
-    setInput('');
+    setMessages((prev) => [...prev, userMsg]);
 
     if (!activeChatApiUrl) {
       const assistantMsg = createAssistantMessage(
         STATIC_DEPLOYMENT_MESSAGE,
         activePrinciple ?? undefined,
       );
-      setMessages((prev) => [...prev, userMsg, assistantMsg]);
+      setMessages((prev) => [...prev, assistantMsg]);
       return;
     }
 
-    setMessages((prev) => [...prev, userMsg]);
+    setInput('');
     setIsLoading(true);
 
     try {
