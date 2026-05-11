@@ -104,6 +104,8 @@ OPENAI_API_KEY=sk-...
 ```
 
 > Without an API key, the chat interface falls back to static Hill quotations.
+>
+> For the static GitHub Pages deployment, set `NEXT_PUBLIC_CHAT_API_URL` to a hosted chat endpoint if you want live AI responses there. Otherwise the deployed dashboard keeps the mentor in offline fallback mode.
 
 ---
 
