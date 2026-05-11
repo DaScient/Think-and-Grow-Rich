@@ -55,9 +55,9 @@ Rules:
 - When relevant, cite specific principles, affirmations, or exercises.`;
 
 function createMessageId(): string {
-  const cryptoApi = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
-  if (typeof cryptoApi?.randomUUID === 'function') {
-    return cryptoApi.randomUUID();
+  const globalCrypto = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
+  if (typeof globalCrypto?.randomUUID === 'function') {
+    return globalCrypto.randomUUID();
   }
 
   return `msg-${Date.now()}-${Math.random().toString(36).slice(2)}`;
