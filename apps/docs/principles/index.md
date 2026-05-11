@@ -6,7 +6,7 @@ The core of Napoleon Hill's philosophy is the sequential application of thirteen
 
 1. **Read each principle** in order — the sequence is intentional.
 2. **Apply the action steps** before moving to the next principle.
-3. **Track your mastery level** in the [Dashboard](/dashboard/) for each principle.
+3. **Track your mastery level** in the [Dashboard](https://dascient.github.io/Think-and-Grow-Rich/dashboard/) for each principle.
 4. **Return to earlier principles** as your understanding deepens.
 
 ## The Five Categories
