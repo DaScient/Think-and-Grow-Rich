@@ -1,0 +1,84 @@
+name: "✨ Feature Request"
+description: "Propose a new feature or enhancement to the dashboard, core, or documentation."
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+        A great feature request answers three questions: **what**, **why**, and **how**. Please be as specific as possible.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem / Motivation"
+      description: "What problem does this feature solve? What is the user need?"
+      placeholder: "As a user tracking my progress on Principle #8 (Persistence), I have no way to add personal reflections or notes to my daily practice log..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "Describe the feature you'd like to see implemented."
+      placeholder: "Add a 'Reflections' textarea to each Principle Detail view that persists to localStorage..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: "Have you considered any alternative solutions or workarounds?"
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Target Package / App"
+      options:
+        - "@tagr/core"
+        - "@tagr/dashboard"
+        - "@tagr/docs"
+        - "CI / GitHub Actions"
+        - "New Package"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority"
+      options:
+        - "🔴 Critical — blocks core workflow"
+        - "🟠 High — significant improvement"
+        - "🟡 Medium — nice to have"
+        - "🟢 Low — polish / minor enhancement"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Acceptance Criteria"
+      description: "List the specific conditions that must be met for this feature to be considered complete."
+      placeholder: |
+        - [ ] Reflections textarea appears on the Principle Detail view
+        - [ ] Text persists to localStorage on each keystroke
+        - [ ] Reflections are displayed in the AI Chat context
+        - [ ] Unit tests cover the persistence hook
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Pre-submission Checklist"
+      options:
+        - label: "I searched existing issues and this is not a duplicate."
+          required: true
+        - label: "This feature aligns with the project's mission of actionable self-development."
+          required: true

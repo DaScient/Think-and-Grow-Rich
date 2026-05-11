@@ -1,0 +1,94 @@
+name: "⚙ Technical Debt"
+description: "Document refactoring work, code quality improvements, or architectural improvements."
+labels: ["tech-debt", "refactor"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Technical Debt
+        Technical debt is a first-class concern in this project. Use this template to document anything that slows down development, increases risk, or reduces code quality.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description of the Debt"
+      description: "What is the technical debt? Where does it live?"
+      placeholder: "The `useDashboard` hook mixes state management and side effects. It should be split into a pure state hook and a separate persistence layer..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impact"
+      description: "How does this debt currently impact development, performance, or maintainability?"
+      placeholder: "Every new feature that touches progress state requires modifying a large, monolithic hook, increasing the risk of regression..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: "Proposed Improvement"
+      description: "How should this be addressed? Provide a specific plan."
+      placeholder: |
+        1. Extract persistence logic into `usePersistence.ts`
+        2. Create a pure `useProgressState.ts` hook
+        3. Compose them in `useDashboard.ts`
+        4. Add unit tests for each hook independently
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Debt Category"
+      options:
+        - "Code Quality — readability, maintainability"
+        - "Performance — speed, bundle size, rendering"
+        - "Testing — missing or inadequate coverage"
+        - "Architecture — structural or design concerns"
+        - "Security — vulnerabilities or unsafe patterns"
+        - "Documentation — missing or inaccurate docs"
+        - "Dependencies — outdated or vulnerable packages"
+        - "CI/CD — build or deployment pipeline issues"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Affected Package / App"
+      options:
+        - "@tagr/core"
+        - "@tagr/dashboard"
+        - "@tagr/docs"
+        - "CI / GitHub Actions"
+        - "Root / Monorepo config"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: "Estimated Effort"
+      options:
+        - "XS — < 1 hour"
+        - "S — 1–4 hours"
+        - "M — 1–2 days"
+        - "L — 3–5 days"
+        - "XL — 1+ week"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Pre-submission Checklist"
+      options:
+        - label: "I have identified the root cause, not just the symptom."
+          required: true
+        - label: "My proposed improvement includes acceptance criteria."
+          required: true

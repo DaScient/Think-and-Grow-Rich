@@ -1,0 +1,97 @@
+name: "🐛 Bug Report"
+description: "Report a reproducible bug in the dashboard, core package, or documentation."
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+        Thanks for taking the time to file a bug report. Please fill out every section carefully — incomplete reports will be closed.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug Description"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "When I click on Principle #3, the step checklist does not persist after refresh..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Provide exact steps to reproduce the behavior."
+      placeholder: |
+        1. Open the Dashboard at http://localhost:3000
+        2. Click on Principle #3 — Auto-Suggestion
+        3. Check Step 1
+        4. Refresh the page
+        5. Step 1 is unchecked
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+      description: "What should happen?"
+      placeholder: "The step should remain checked after page refresh."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual Behavior"
+      description: "What actually happens?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Affected Package / App"
+      options:
+        - "@tagr/core"
+        - "@tagr/dashboard"
+        - "@tagr/docs"
+        - "CI / GitHub Actions"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: "Node.js Version"
+      placeholder: "e.g. 20.14.0"
+    validations:
+      required: true
+
+  - type: input
+    id: pnpm-version
+    attributes:
+      label: "pnpm Version"
+      placeholder: "e.g. 9.15.0"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Relevant Logs / Screenshots"
+      description: "Paste any relevant error output or attach screenshots."
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Pre-submission Checklist"
+      options:
+        - label: "I searched existing issues and this is not a duplicate."
+          required: true
+        - label: "I reproduced this on the latest commit of `main`."
+          required: true
+        - label: "I included all information required to reproduce the bug."
+          required: true
