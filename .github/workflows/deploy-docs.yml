@@ -41,6 +41,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Build @tagr/core first so its dist/ output is available for the
+      # dashboard's workspace import (pnpm --filter does not honor Turbo's
+      # ^build dependency chain, so we build core explicitly here).
+      - name: Build core package
+        run: pnpm --filter @tagr/core build
+
       # Build the VitePress docs
       - name: Build docs
         run: pnpm --filter @tagr/docs build
