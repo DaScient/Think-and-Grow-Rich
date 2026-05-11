@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tagr/core": ["../../packages/core/src"],
+      "@tagr/core/*": ["../../packages/core/src/*"]
+    }
+  }
+}
