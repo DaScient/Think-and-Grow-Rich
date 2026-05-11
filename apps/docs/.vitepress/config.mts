@@ -55,6 +55,7 @@ export default defineConfig({
             { text: 'System Overview', link: '/architecture/' },
             { text: 'Monorepo Structure', link: '/architecture/monorepo' },
             { text: 'Core Package API', link: '/architecture/core-api' },
+            { text: 'TAGR OS Layer', link: '/architecture/tagr-os' },
             { text: 'Dashboard App', link: '/architecture/dashboard' },
           ],
         },
